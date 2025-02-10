@@ -6,13 +6,14 @@
         <div class=followstatus>
         <% if @user['user_id'] == @profile_user['user_id'] %>
             This is you!
-        <% elsif @followed %>
+        <% elsif followed %>
             You are currently following this user.
-            <a class="unfollow" href="">Unfollow user</a>.
+            <a class="unfollow" href="/<%= @profile_user['username'] %>/unfollow"> Unfollow user </a>.
         <% else %>
             You are not yet following this user.
-            <a class="follow" href="">Follow user</a>.
+            <a class="follow" href="/<%= @profile_user['username'] %>/follow"> Follow user </a>.
         <% end %>
+        </div>
     <% end %>
     <% if request.path_info == "/timeline" %>
         <div class="twitbox">

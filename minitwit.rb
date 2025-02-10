@@ -177,8 +177,23 @@ class MiniTwit < Sinatra::Base
     end
   end
 
+  post '/:username/follow' do
+    halt 401 unless @user
+    whom_id = get_user_id(params[:username])
+    halt 401 unless whom_id
+    query_db('INSERT INTO follower (who_id, whom_id) VALUES (?, ?)', [@user['user_id'], whom_id])
+    flash[:notice] = "You are now following \"#{params[:username]}\""
+    redirect to("/#{params[:username]}/timeline")
+  end
 
-  # TODO: I don't think we have the follow and unfollow option right now
+  get '/:username/unfollow' do
+    halt 401 unless @user
+    whom_id = get_user_id(params[:username])
+    halt 404 unless whom_id
+    query_db('DELETE FROM follower WHERE who_id=? AND whom_id=?', [@user['user_id'], whom_id])
+    flash[:notice] = "You are no longer following \"#{params[:username]}\""
+    redirect to("/#{params[:username]}/timeline")
+  end
 
   # Start the application
   run! if __FILE__ == $PROGRAM_NAME
