@@ -1,5 +1,18 @@
+
+networks:
+  main:
+    name: "itu-minitwit-network"
+
 services:
   web:
-    image: thg/rubytwit
+    image: ${DOCKER_USERNAME}/minitwitimage
     ports:
-      - "0.0.0.0:4567:4567"
+      - "5000:5000"
+    networks:
+      - main
+  test:
+    image: ${DOCKER_USERNAME}/minitwittestimage
+    depends_on:
+      - web
+    networks:
+      - main

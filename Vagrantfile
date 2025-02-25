@@ -50,7 +50,9 @@ RESERVED_IP = get_or_create_reserved_ip()
 Vagrant.configure("2") do |config|
   config.vm.box = 'digital_ocean'
   config.vm.box_url = "https://github.com/devopsgroup-io/vagrant-digitalocean/raw/master/box/digital_ocean.box"
-  config.ssh.private_key_path = '~/.ssh/id_ed25519'
+  config.ssh.private_key_path = '~/.ssh/ga_ssh_key'
+
+  config.vm.synced_folder "remote_files", "/minitwit", type: "rsync"
   config.vm.synced_folder ".", "/vagrant", type: "rsync"
 
   config.vm.define unique_hostname, primary: false do |server|
@@ -66,15 +68,13 @@ Vagrant.configure("2") do |config|
 
     server.vm.hostname = unique_hostname
 
+    server.vm.provision "shell", inline: 'echo "export DOCKER_USERNAME=' + "'" + ENV["DOCKER_USERNAME"] + "'" + '" >> ~/.bash_profile'
+    server.vm.provision "shell", inline: 'echo "export DOCKER_PASSWORD=' + "'" + ENV["DOCKER_PASSWORD"] + "'" + '" >> ~/.bash_profile'
+    server.vm.provision "shell", path: './start_vm.sh'
+
     server.vm.provision "shell", inline: <<-SHELL
       echo "Provisioning new droplet..."
-      cd /vagrant || exit
-
-      chmod +x start_web_server.sh
-      ./start_web_server.sh
-
-      echo "Waiting for new droplet to be registered with the API..."
-      sleep 30
+      cd /vagrant 
 
       chmod +x reassign_reserved_ip.sh
       ./reassign_reserved_ip.sh "#{DIGITAL_OCEAN_TOKEN}" "#{unique_hostname}" "#{RESERVED_IP}"
@@ -82,7 +82,7 @@ Vagrant.configure("2") do |config|
       echo "================================================================="
       echo "=                            DONE                               ="
       echo "=   Your Sinatra app is running. Navigate in your browser to:   ="
-      echo "=   http://#{RESERVED_IP}:4567                                  ="
+      echo "=   http://#{RESERVED_IP}:5000                                  ="
       echo "================================================================="
     SHELL
   end

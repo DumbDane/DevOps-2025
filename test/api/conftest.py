@@ -5,7 +5,7 @@ import base64
 import sqlite3
 import pytest
 
-BASE_URL = 'http://127.0.0.1:4567'
+BASE_URL = 'http://127.0.0.1:5000'
 DATABASE = f"{Path('.').cwd()}/artifacts/test.db"
 SCHEMA = f"{Path('.').cwd()}/artifacts/schema.sql"
 USERNAME = 'simulator'
