@@ -17,8 +17,8 @@ def test_register():
     # TODO: add another assertion that it is really there
 
     # verify that latest was updated
-    #response = requests.get(f'{BASE_URL}/latest', headers=HEADERS)
-    #assert response.json()['latest'] == 1, f"Expected 'latest == 1' got {response.content}"
+    response = requests.get(f'{BASE_URL}/latest', headers=HEADERS)
+    assert response.json()['latest'] == 1, f"Expected 'latest == 1' got {response.content}"
 
 
 
@@ -35,8 +35,8 @@ def test_register_b():
     # TODO: add another assertion that it is really there
 
     # verify that latest was updated
-    #response = requests.get(f'{BASE_URL}/latest', headers=HEADERS)
-    #assert response.json()['latest'] == 5, f"Expected 'latest == 5' got {response.content}"
+    response = requests.get(f'{BASE_URL}/latest', headers=HEADERS)
+    assert response.json()['latest'] == 5, f"Expected 'latest == 5' got {response.content}"
 
 
 def test_register_c():
@@ -50,7 +50,7 @@ def test_register_c():
     assert response.ok
 
     # verify that latest was updated
-    #response = requests.get(f'{BASE_URL}/latest', headers=HEADERS)
-    #assert response.json()['latest'] == 6, f"Expected 'latest == 6' got {response.content}"
+    response = requests.get(f'{BASE_URL}/latest', headers=HEADERS)
+    assert response.json()['latest'] == 6, f"Expected 'latest == 6' got {response.content}"
 
 

@@ -5,7 +5,7 @@ import json
 import requests
 
 
-@pytest.fixture()
+@pytest.fixture
 def register_b_c():
     username = 'b'
     email = 'b@b.b'
@@ -50,8 +50,8 @@ def test_follow_user(register_b_c):
     assert "c" in json_data["follows"], f"c doesn't follow foo, {json_data}"
 
     # verify that latest was updated
-    #response = requests.get(f'{BASE_URL}/latest', headers=HEADERS)
-    #assert response.json()['latest'] == 9, f"Expected 'latest == 9', got {response.content}"
+    response = requests.get(f'{BASE_URL}/latest', headers=HEADERS)
+    assert response.json()['latest'] == 9, f"Expected 'latest == 9', got {response.content}"
 
 
 def test_a_unfollows_b():
@@ -73,7 +73,7 @@ def test_a_unfollows_b():
         f"b still follows a, {response.json()}"
 
     # verify that latest was updated
-    #response = requests.get(f'{BASE_URL}/latest', headers=HEADERS)
-    #assert response.json()['latest'] == 11, f"Expected 'latest == 11', got {response.content}"
+    response = requests.get(f'{BASE_URL}/latest', headers=HEADERS)
+    assert response.json()['latest'] == 11, f"Expected 'latest == 11', got {response.content}"
 
 

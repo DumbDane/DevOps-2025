@@ -15,8 +15,8 @@ def test_create_msg():
     assert response.ok, f"Got {response.status_code} with {response.content}"
 
     # verify that latest was updated
-    #response = requests.get(f'{BASE_URL}/latest', headers=HEADERS)
-    #assert response.json()['latest'] == 2, f"Expected 'latest == 2', got {response.content}"
+    response = requests.get(f'{BASE_URL}/latest', headers=HEADERS)
+    assert response.json()['latest'] == 2, f"Expected 'latest == 2', got {response.content}"
 
 
 def test_get_latest_user_msgs():
@@ -36,8 +36,8 @@ def test_get_latest_user_msgs():
     assert got_it_earlier
 
     # verify that latest was updated
-    #response = requests.get(f'{BASE_URL}/latest', headers=HEADERS)
-    #assert response.json()['latest'] == 3, f"Expected 'latest == 3', got {response.content}"
+    response = requests.get(f'{BASE_URL}/latest', headers=HEADERS)
+    assert response.json()['latest'] == 3, f"Expected 'latest == 3', got {response.content}"
 
 
 def test_get_latest_msgs():
@@ -56,5 +56,5 @@ def test_get_latest_msgs():
     assert got_it_earlier
 
     # verify that latest was updated
-    #response = requests.get(f'{BASE_URL}/latest', headers=HEADERS)
-    #assert response.json()['latest'] == 4, f"Expected 'latest == 4', got {response.content}"
+    response = requests.get(f'{BASE_URL}/latest', headers=HEADERS)
+    assert response.json()['latest'] == 4, f"Expected 'latest == 4', got {response.content}"

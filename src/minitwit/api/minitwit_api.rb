@@ -27,6 +27,8 @@ class MiniTwit < Sinatra::Base
     begin
       content_type :json
       request.body.rewind
+
+      @latest = params[:latest]
       @data = JSON.parse(request.body.read)
     rescue JSON::ParserError
       status 401
@@ -36,6 +38,11 @@ class MiniTwit < Sinatra::Base
 
   # After request
   after do
+    if !@latest.nil?
+      file_path = File.join(File.dirname(__FILE__), 'routes/latest_processed_sim_action_id.txt')
+      File.write(file_path, @latest)
+    end
+
     @db.close if @db
   end
 
