@@ -50,14 +50,14 @@ RESERVED_IP = get_or_create_reserved_ip()
 Vagrant.configure("2") do |config|
   config.vm.box = 'digital_ocean'
   config.vm.box_url = "https://github.com/devopsgroup-io/vagrant-digitalocean/raw/master/box/digital_ocean.box"
-  config.ssh.private_key_path = '~/.ssh/'+ENV["SSH_KEY_NAME"]
 
   config.vm.synced_folder ".", "/vagrant", disabled: true
   config.vm.synced_folder "remote_files", "/minitwit", type: "rsync"
 
 
+  config.ssh.private_key_path = '~/.ssh/id_rsa'
   config.vm.define unique_hostname, primary: false do |server|
-    server.vm.provider :digital_ocean do |provider|
+    server.vm.provider :digital_ocean do |provider, override|
       provider.ssh_key_name = ENV["SSH_KEY_NAME"]
       provider.ssh_keys = [
         "28:85:c5:18:79:06:94:e1:fa:40:d4:57:ab:ea:ce:6b",
