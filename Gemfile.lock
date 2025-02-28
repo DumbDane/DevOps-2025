@@ -86,6 +86,8 @@ GEM
       racc (~> 1.5)
       sexp_processor (~> 4.16)
     securerandom (0.4.1)
+    sequel (5.89.0)
+      bigdecimal
     sexp_processor (4.17.3)
     sinatra (4.1.1)
       logger (>= 1.6.0)
@@ -136,6 +138,7 @@ DEPENDENCIES
   rack-flash3 (>= 1.0.5)
   rackup (~> 2.2)
   rake (>= 13.2.1)
+  sequel (~> 5.89)
   sinatra (>= 4.1.1)
   sinatra-activerecord (>= 2.0.28)
   sqlite3 (~> 2.5)

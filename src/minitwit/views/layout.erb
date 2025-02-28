@@ -13,7 +13,7 @@
             <% if current_user %>
                 <a href="/">my timeline</a> |
                 <a href="/public">public timeline</a> |
-                <a href="/logout">sign out [<%= current_user['username'] %>]</a>
+                <a href="/logout">sign out [<%= current_user[:username] %>]</a>
             <% else %>
                 <a href="/public">public timeline</a> |
                 <a href="/register">sign up</a> |

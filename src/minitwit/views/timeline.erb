@@ -2,28 +2,31 @@
     <%= @title %>
 </h2>
 <% if current_user %>
-    <% if @profile_user && request.path_info == "/#{@profile_user['username']}" %>
-        <div class=followstatus>
-        <% if current_user['user_id'] == @profile_user['user_id'] %>
+    <% if @profile_user && request.path_info == "/#{@profile_user[:username]}" %>
+        <div class="followstatus">
+        <% if current_user[:user_id] == @profile_user[:user_id] %>
             This is you!
         <% elsif followed %>
             You are currently following this user.
-            <form action="/<%= @profile_user['username'] %>/unfollow" method="post">
+            <form action="/<%= @profile_user[:username] %>/unfollow" method="post">
                 <button type="submit" class="unfollow">Unfollow user</button>
             </form>
         <% else %>
             You are not yet following this user.
-            <form action="/<%= @profile_user['username'] %>/follow" method="post">
+            <form action="/<%= @profile_user[:username] %>/follow" method="post">
                 <button type="submit" class="follow">Follow user</button>
             </form>
         <% end %>
+        </div>
     <% end %>
     <% if request.path_info == "/" %>
         <div class="twitbox">
-        <h3>What's on your mind <%= current_user['username'] %>?</h3>
+        <h3>What's on your mind <%= current_user[:username] %>?</h3>
         <form action="/add_message" method="post">
-            <p><input type="text" name="text" size=60><!--
-            --><input type="submit" value="Share">
+            <p>
+              <input type="text" name="text" size="60">
+              <input type="submit" value="Share">
+            </p>
         </form>
         </div>
     <% end %>
@@ -32,12 +35,12 @@
     <% if @messages.length > 0 %>
         <% @messages.each do |message| %>
             <li>
-                <img src="<%= gravatar_url(message['email'], size=48) %>" alt="User Gravatar" />
+                <img src="<%= gravatar_url(message[:email], size=48) %>" alt="User Gravatar" />
                 <strong>
-                    <a href="<%= message['username'] %>"><%= message['username'] %></a>
+                    <a href="<%= message[:username] %>"><%= message[:username] %></a>
                 </strong>
-                    <%= message['text'] %>
-                <small>— <%= format_datetime(message['pub_date']) %></small>
+                <%= message[:text] %>
+                <small>— <%= format_datetime(message[:pub_date]) %></small>
             </li>
         <% end %>
     <% else %>

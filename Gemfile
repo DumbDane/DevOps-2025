@@ -10,4 +10,5 @@ gem 'haml', '~> 6.3'
 gem 'html2haml', '~> 2.3'
 gem 'rackup', '~> 2.2'
 gem 'puma', '~> 6.6'
-gem "dotenv", "~> 3.1"
+gem 'sequel', '~> 5.89'
+gem "dotenv", '~> 3.1'

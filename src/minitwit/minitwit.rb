@@ -7,8 +7,8 @@ require 'erb'
 require 'rack/session/cookie'
 require 'securerandom'
 require 'digest/md5'
+require 'sequel'
 require 'dotenv/load'
-
 
 # Require helpers and controllers
 Dir[File.join(__dir__, "helpers/*.rb")].each {|file| require file }

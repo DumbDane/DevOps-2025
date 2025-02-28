@@ -3,7 +3,7 @@ class WebController < BaseController
   # Index route
   get '/' do
     redirect '/public' unless current_user
-    @messages = get_timeline_messages(current_user['user_id'])
+    @messages = get_timeline_messages(current_user[:user_id])
     @title = "My Timeline"
     erb :timeline
   end
@@ -26,7 +26,7 @@ class WebController < BaseController
     result = authenticate_user(params[:username], params[:password])
     
     if result[:success]
-      session[:user_id] = result[:user]['user_id']
+      session[:user_id] = result[:user][:user_id]
       flash[:notice] = 'You were logged in'
       redirect '/'
     else
@@ -75,7 +75,7 @@ class WebController < BaseController
     halt 401 unless current_user
     
     if params[:text] && !params[:text].empty?
-      add_message(current_user['user_id'], params[:text])
+      add_message(current_user[:user_id], params[:text])
       flash[:notice] = "Your message was recorded"
     end
     
@@ -89,10 +89,10 @@ class WebController < BaseController
     
     followed = false
     if current_user
-      followed = is_following?(current_user['user_id'], @profile_user['user_id'])
+      followed = is_following?(current_user[:user_id], @profile_user[:user_id])
     end
     
-    @messages = get_user_messages(@profile_user['user_id'])
+    @messages = get_user_messages(@profile_user[:user_id])
     @title = "#{params[:username]}'s Timeline"
     erb :timeline, locals: { followed: followed }
   end
@@ -104,7 +104,7 @@ class WebController < BaseController
     whom_id = get_user_id(params[:username])
     halt 404, "User not found" unless whom_id
     
-    follow_user(current_user['user_id'], whom_id)
+    follow_user(current_user[:user_id], whom_id)
     flash[:notice] = "You are now following \"#{params[:username]}\""
     redirect "/#{params[:username]}"
   end
@@ -124,7 +124,7 @@ class WebController < BaseController
     whom_id = get_user_id(params[:username])
     halt 404, "User not found" unless whom_id
     
-    unfollow_user(current_user['user_id'], whom_id)
+    unfollow_user(current_user[:user_id], whom_id)
     flash[:notice] = "You are no longer following \"#{params[:username]}\""
     redirect "/#{params[:username]}"
   end

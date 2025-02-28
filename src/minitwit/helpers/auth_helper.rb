@@ -21,7 +21,13 @@ module AuthHelper
     return { success: false, error: "Username is already taken." } if existing_user
     
     password_hash = BCrypt::Password.create(password)
-    query_db('INSERT INTO user (username, email, pw_hash) VALUES (?, ?, ?)', [username, email, password_hash.to_s])
+    
+    # Using Sequel to insert the new user
+    db[:user].insert(
+      username: username, 
+      email: email, 
+      pw_hash: password_hash
+    )
     
     { success: true }
   end
@@ -29,12 +35,13 @@ module AuthHelper
   # Authenticate user
   def authenticate_user(username, password)
     user = get_user_by_username(username)
+    
     if user.nil?
       return { success: false, error: 'Invalid username' }
-    elsif BCrypt::Password.new(user['pw_hash']) != password
+    elsif BCrypt::Password.new(user[:pw_hash]) != password
       return { success: false, error: 'Invalid password' }
     else
-      session[:user_id] = user['user_id']  # Store user ID in session
+      session[:user_id] = user[:user_id]  # Store user ID in session
       return { success: true, user: user }
     end
   end
