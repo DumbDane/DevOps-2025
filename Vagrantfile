@@ -52,18 +52,26 @@ Vagrant.configure("2") do |config|
   config.vm.box_url = "https://github.com/devopsgroup-io/vagrant-digitalocean/raw/master/box/digital_ocean.box"
   config.ssh.private_key_path = '~/.ssh/'+ENV["SSH_KEY_NAME"]
 
+  config.vm.synced_folder ".", "/vagrant", disabled: true
   config.vm.synced_folder "remote_files", "/minitwit", type: "rsync"
 
 
   config.vm.define unique_hostname, primary: false do |server|
     server.vm.provider :digital_ocean do |provider|
       provider.ssh_key_name = ENV["SSH_KEY_NAME"]
+      provider.ssh_keys = [
+        "28:85:c5:18:79:06:94:e1:fa:40:d4:57:ab:ea:ce:6b",
+        "24:d6:e6:96:9b:47:d5:25:d6:cb:7a:d9:8f:99:99:8f",
+        "33:be:da:23:b2:69:c7:22:d0:83:03:a8:30:74:0d:d7"
+      ]
       provider.token = DIGITAL_OCEAN_TOKEN
       provider.image = 'ubuntu-22-04-x64'
       provider.region = DROPLET_REGION
       provider.size = 's-1vcpu-2gb'
       provider.privatenetworking = true
       provider.tags = ["webserver"]
+
+      override.ssh.insert_key = false  # Prevents Vagrant from overriding SSH keys
     end
 
     server.vm.hostname = unique_hostname
@@ -78,8 +86,10 @@ Vagrant.configure("2") do |config|
         sqlite3 /tmp/minitwit.db < schema.sql
       fi
 
-      chmod +x reassign_reserved_ip.sh
-      ./reassign_reserved_ip.sh "#{DIGITAL_OCEAN_TOKEN}" "#{unique_hostname}" "#{RESERVED_IP}"
+      if [ "$ENV" = prod ]; then
+        chmod +x reassign_reserved_ip.sh
+        ./reassign_reserved_ip.sh "#{DIGITAL_OCEAN_TOKEN}" "#{unique_hostname}" "#{RESERVED_IP}"
+      fi
 
       echo "================================================================="
       echo "=                            DONE                               ="
